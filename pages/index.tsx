@@ -2,9 +2,13 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilsStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
-import { GetStaticProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 
-export default function Home({allPostsData}: {allPostsData : { entries: {API: string, Description: string}[]}}) {
+export default function Home({
+  allPostsData
+}: { 
+  allPostsData: { entries: {API: string, Description: string}[]}
+}) {
   return (
     <Layout home>
       <Head>
@@ -32,7 +36,7 @@ export default function Home({allPostsData}: {allPostsData : { entries: {API: st
   )
 }
 
-export const getStaticProps: GetStaticProps = async () => {
-  const allPostsData = getSortedPostsData()
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const allPostsData = await getSortedPostsData()
   return allPostsData
 }
