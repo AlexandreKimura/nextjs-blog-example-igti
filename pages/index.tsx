@@ -2,7 +2,7 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilsStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
-import { GetServerSideProps } from 'next'
+import { GetServerSideProps, GetStaticProps } from 'next'
 import useSWR from 'swr'
 
 const fetcher = (url: string): Promise<any> => fetch(url).then((res) => res.json())
@@ -36,7 +36,11 @@ export default function Home() {
   )
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const allPostsData = await getSortedPostsData()
-  return allPostsData
+export const getStaticProps: GetStaticProps = async () => {
+  const allPostsData = getSortedPostsData()
+  return {
+    props: {
+      allPostsData
+    }
+  }
 }
