@@ -2,13 +2,13 @@ import Head from 'next/head'
 import Layout, { siteTitle } from '../components/layout'
 import utilsStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
-import { GetServerSideProps, GetStaticProps } from 'next'
+import { GetServerSideProps } from 'next'
+import useSWR from 'swr'
 
-export default function Home({
-  allPostsData
-}: { 
-  allPostsData: { entries: {API: string, Description: string}[]}
-}) {
+const fetcher = (url: string): Promise<any> => fetch(url).then((res) => res.json())
+
+export default function Home() {
+  const { data } = useSWR("https://api.publicapis.org/entries", fetcher)
   return (
     <Layout home>
       <Head>
@@ -23,7 +23,7 @@ export default function Home({
       <section className={`${utilsStyles.readingMd} ${utilsStyles.padding1px}`}>
         <h2 className={utilsStyles.headingLg}>Blog</h2>
         <ul className={utilsStyles.list}>
-          {allPostsData.entries.map(({API, Description}) => (
+          {data?.entries?.map(({API, Description}) => (
             <li className={utilsStyles.listItem} key={API}>
               {API}
               <br/>
