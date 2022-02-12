@@ -1,6 +1,9 @@
 import { GetStaticPaths, GetStaticProps } from "next"
 import Layout from "../../components/layout"
 import { getAllPostsIds, getPostData } from '../../lib/posts'
+import Head from "next/head"
+import Date from "../../components/date"
+import utilsStyles from '../../styles/utils.module.css'
 
 export default function Post({postData}: {
   postData: {
@@ -10,7 +13,18 @@ export default function Post({postData}: {
     contentHtml: string
   }
 }) {
-  return <Layout>{postData.title}<br/>{postData.id}<br/>{postData.date}<br/><div dangerouslySetInnerHTML={{__html: postData.contentHtml}}></div></Layout>
+  return (
+    <Layout>
+      <Head><title>{postData.title}</title></Head>
+      <article>
+        <h1 className={utilsStyles.headingXl}>{postData.title}</h1>
+        <div className={utilsStyles.lightText}>
+          <Date dateString={postData.date} />
+        </div>
+        <div dangerouslySetInnerHTML={{__html: postData.contentHtml}}></div>
+      </article>
+    </Layout>
+  )
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
