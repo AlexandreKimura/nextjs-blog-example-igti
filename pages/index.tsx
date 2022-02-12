@@ -4,7 +4,7 @@ import utilsStyles from '../styles/utils.module.css'
 import { getSortedPostsData } from '../lib/posts'
 import { GetStaticProps } from 'next'
 
-export default function Home({allPostsData}: {allPostsData : {date: string, title: string, id: string}[]}) {
+export default function Home({allPostsData}: {allPostsData : { entries: {API: string, Description: string}[]}}) {
   return (
     <Layout home>
       <Head>
@@ -19,13 +19,11 @@ export default function Home({allPostsData}: {allPostsData : {date: string, titl
       <section className={`${utilsStyles.readingMd} ${utilsStyles.padding1px}`}>
         <h2 className={utilsStyles.headingLg}>Blog</h2>
         <ul className={utilsStyles.list}>
-          {allPostsData.map(({id, date, title}) => (
-            <li className={utilsStyles.listItem} key={id}>
-              {title}
+          {allPostsData.entries.map(({API, Description}) => (
+            <li className={utilsStyles.listItem} key={API}>
+              {API}
               <br/>
-              {id}
-              <br/>
-              {date}
+              {Description}
             </li>
           ))}
         </ul>
@@ -36,9 +34,5 @@ export default function Home({allPostsData}: {allPostsData : {date: string, titl
 
 export const getStaticProps: GetStaticProps = async () => {
   const allPostsData = getSortedPostsData()
-  return {
-    props: {
-      allPostsData
-    }
-  }
+  return allPostsData
 }
