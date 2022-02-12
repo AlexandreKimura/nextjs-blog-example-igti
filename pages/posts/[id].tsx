@@ -7,9 +7,10 @@ export default function Post({postData}: {
     title: string
     date: string
     id: string
+    contentHtml: string
   }
 }) {
-  return <Layout>{postData.title}<br/>{postData.id}<br/>{postData.date}</Layout>
+  return <Layout>{postData.title}<br/>{postData.id}<br/>{postData.date}<br/><div dangerouslySetInnerHTML={{__html: postData.contentHtml}}></div></Layout>
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
